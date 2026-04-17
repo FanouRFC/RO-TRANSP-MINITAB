@@ -1,8 +1,5 @@
-export const minitab = () =>
+export const minitab = (productUnit: number[][], disponibleQuantity: number[], destinyQuantity: number[]) =>
 {
-    let productUnit: number[][] = [[24, 22, 61, 49, 83, 35], [23, 39, 78, 28, 65, 42], [67, 56, 92, 24, 53, 54], [71, 43, 91, 67, 40, 49]];
-    let disponibleQuantity: number[] = [18, 32, 14, 9]; // TY le amin lignes reny, le quantite am lignes
-    let destinyQuantity: number[] = [9, 11, 28, 6, 14, 5]; // TY le amin colonnes reny, le quantite am colonnes
     let baseSolution: number[][] = [];
     
     // Miinitialiser anle matrice solution de base
@@ -68,5 +65,10 @@ export const minitab = () =>
     console.log("A = " + disponibleQuantity);
     console.log("B = " + destinyQuantity);
     console.log("Solution de base = " + baseSolution);
-    console.log("Z = " + Z);
+    console.log("Z = " + Z)
+
+    return{
+        baseSolution,
+        Z
+    }
 }
