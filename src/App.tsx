@@ -1,4 +1,5 @@
 import "./App.css";
+import Tableau from "./components/Tableau"
 
 function App() {
   return (
@@ -6,6 +7,7 @@ function App() {
       <p className="text-center text-4xl font-bold">
         Projet RO : TRANSP - MINITAB - STEPPING STONE
       </p>
+      <Tableau/>
     </>
   );
 }
