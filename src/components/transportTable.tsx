@@ -24,7 +24,7 @@ export default function TableData({
             <th className="p-2">{String.fromCharCode(65 + index)}</th>
             {l.map((c, index1) => (
               <th key={index1} className="border p-2">
-                {c}
+                {c !== 0 && c}
               </th>
             ))}
             <th>{disponibleQuantity[index]}</th>
