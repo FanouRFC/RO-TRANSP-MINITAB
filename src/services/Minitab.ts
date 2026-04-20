@@ -1,3 +1,5 @@
+import type { EdgesData } from "../types/arc";
+
 export const minitab = (productUnit: number[][], disponibleQuantity: number[], destinyQuantity: number[]) =>
 {
     let baseSolution: number[][] = [];
@@ -71,4 +73,25 @@ export const minitab = (productUnit: number[][], disponibleQuantity: number[], d
         baseSolution,
         Z
     }
+}
+
+export const getArcTable = (transportTableData: number[][] ,transportTableSolution: number[][]): EdgesData[]=>{
+    var Arcs: EdgesData[]  = [] 
+    var VXIndice = 0
+    var VYIndice = 1
+    for(let l of transportTableSolution){
+        for(let x of l){
+                if(x !== 0){
+                    Arcs.push({
+                        X: String.fromCharCode(65 + VXIndice),
+                        Cxy: transportTableData[VXIndice][VYIndice - 1],
+                        Y: VYIndice.toString()
+                    })
+                }
+                VYIndice++
+        }
+        VYIndice = 1
+        VXIndice++
+    }
+    return Arcs
 }
