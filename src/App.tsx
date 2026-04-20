@@ -1,10 +1,7 @@
-import { useMemo } from "react";
 import "./App.css";
 import Arc from "./components/arc";
 import Tableau from "./components/Tableau";
-import { destinyQuantity, disponibleQuantity, productUnit } from "./data/table";
-import { minitab } from "./services/Minitab";
-import type { NodeData } from "./types/arc";
+import type { EdgesData, NodeData } from "./types/arc";
 
 function App() {
   // Données hi simulevako anle node sy potentiel reny fotsk itony
@@ -24,10 +21,17 @@ function App() {
     { id: "6", label: "6", type: "right", value: 855 },
   ];
 
-  const solution = useMemo(() => {
-    return minitab(productUnit, disponibleQuantity, destinyQuantity)
-      .baseSolution;
-  }, []);
+  const edgesData: EdgesData[] = [
+    { X: "A", Cxy: 22, Y: "2" },
+    { X: "A", Cxy: 61, Y: "3" },
+    { X: "A", Cxy: 83, Y: "6" },
+    { X: "B", Cxy: 23, Y: "1" },
+    { X: "B", Cxy: 78, Y: "3" },
+    { X: "C", Cxy: 92, Y: "3" },
+    { X: "C", Cxy: 24, Y: "4" },
+    { X: "C", Cxy: 53, Y: "5" },
+    { X: "D", Cxy: 40, Y: "5" },
+  ];
 
   return (
     <div className="w-full h-100">
@@ -35,11 +39,7 @@ function App() {
         Projet RO : TRANSP - MINITAB - STEPPING STONE
       </p>
       <Tableau />
-      <Arc
-        transportTable={productUnit}
-        transportTableSolution={solution}
-        nodesData={nodesData}
-      />
+      <Arc edgesData={edgesData} nodesData={nodesData} />
     </div>
   );
 }
