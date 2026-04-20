@@ -34,7 +34,7 @@ export default function Arc({
   }, []);
 
   return (
-    <div style={{ height: "50%", width: "100%" }}>
+    <div className="mx-10 w-1/2 h-full border rounded-xl">
       <ReactFlow nodes={ArcNodes} edgeTypes={edgeTypes} edges={ArcEdges}>
         <Background />
         <Controls />
