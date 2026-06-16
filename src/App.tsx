@@ -22,15 +22,13 @@ function App() {
   ];
 
   const edgesData: EdgesData[] = [
-    { X: "A", Cxy: 22, Y: "2" },
-    { X: "A", Cxy: 61, Y: "3" },
-    { X: "A", Cxy: 83, Y: "6" },
-    { X: "B", Cxy: 23, Y: "1" },
-    { X: "B", Cxy: 78, Y: "3" },
-    { X: "C", Cxy: 92, Y: "3" },
-    { X: "C", Cxy: 24, Y: "4" },
-    { X: "C", Cxy: 53, Y: "5" },
-    { X: "D", Cxy: 40, Y: "5" },
+    {X: 'A', Y: '3', Cxy: 45},
+    {X: 'A', Y: '4', Cxy: 30},
+    {X: 'B', Y: '2', Cxy: 15},
+    {X: 'C', Y: '1', Cxy: 30},
+    {X: 'C', Y: '5', Cxy: 15},
+    {X: 'C', Y: '6', Cxy: 55},
+    {X: 'D', Y: '4', Cxy: 10},
   ];
 
   return (

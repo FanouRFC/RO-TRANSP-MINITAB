@@ -11,3 +11,11 @@ export type EdgesData = {
     Y: string;
 }
 
+export type ArcsData = {
+    IsDegenerate: boolean;
+    EdgesDatas : EdgesData[];
+}
+
+export type StringDictionary = {
+    [key: string] : string[];
+}
