@@ -360,6 +360,13 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
     let optimalSolution = {};
     let preOptimalSolution = {};
     let fullMatriceBase = {};
+
+    // --- AJOUT : Structure pour l'historique de la recherche de chemins ---
+    let etapesOptimisation = {
+        cheminsEvalues: [], // Tous les cycles fermés trouvés avec leurs détails
+        cheminChoisi: null   // Le cycle gagnant appliqué
+    };
+
     Object.keys(matriceOriginal).forEach(index=> {
         if(Object.keys(baseSolution).includes(index)){
             fullMatriceBase[`${index}`] = baseSolution[index];
@@ -451,6 +458,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
                                     }
                                 } else {
                                     trouve = true;
+                                    loopPath.push(headIndex); // On ferme la boucle proprement pour l'affichage
                                 }
                             }
                         }
@@ -461,18 +469,42 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
     }
    
     searchPath(loopPath, numLigne, headIndex);
+
+    // Nettoyer le doublon de fermeture si nécessaire pour la logique originale
+    if (loopPath[loopPath.length - 1] === headIndex) {
+        loopPath.pop();
+    }
+
     let loopMin = Infinity;
     for(let i=1; i < loopPath.length; i=i+2){
         if(fullMatriceBase[loopPath[i]]<loopMin){
             loopMin = fullMatriceBase[loopPath[i]]
         }
     }
+
+    let gainEstime = loopMin * headValue;
     chemins.push({substitue: headIndex, gain: loopMin*headValue, substitueValue: loopMin, chemin: loopPath});
+
+    // --- AJOUT : Sauvegarde des détails du chemin évalué ---
+    let descriptionChemin = loopPath.map((caseId, idx) => {
+        return `${caseId}(${idx % 2 === 0 ? '+' : '-'})`;
+    }).join(' -> ') + ` -> ${headIndex}`;
+
+    etapesOptimisation.cheminsEvalues.push({
+        caseEntrante: headIndex,
+        coutMarginal: headValue,
+        cheminForme: descriptionChemin,
+        quantiteMax: loopMin,
+        gainTotal: gainEstime
+    });
+
 }
 
     let gain = 0;
     let cheminPrise = [];
     let substitueValue;
+    let caseGagnante = "";
+
     chemins.map(chemin => {
         if(chemin.gain < gain){
             gain = chemin.gain;
@@ -481,6 +513,20 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
         }
     })
 
+    // --- AJOUT : Enregistrement du choix final retenu ---
+    if (cheminPrise.length > 0) {
+        etapesOptimisation.cheminChoisi = {
+            caseEntrante: caseGagnante,
+            quantiteDeplacee: substitueValue,
+            gainAmelioration: gain,
+            cheminDetaille: cheminPrise.map((caseId, idx) => ({
+                case: caseId,
+                signe: idx % 2 === 0 ? '+' : '-',
+                ancienneValeur: fullMatriceBase[caseId],
+                nouvelleValeur: idx % 2 === 0 ? fullMatriceBase[caseId] + substitueValue : fullMatriceBase[caseId] - substitueValue
+            }))
+        };
+    }
 
     for(let i = 0; i < cheminPrise.length; i++){
         if(i%2!=0){
@@ -497,6 +543,13 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
             optimalSolution[`${id}`] = fullMatriceBase[`${id}`]
         }
     })
+
+    console.log("Etapes optimisation :")
+    console.log(etapesOptimisation)
+    // for (let i = 0; i < etapesOptimisation.length; ++i)
+    //     console.log(etapesOptimisation[i])
+    console.log("==================================================")
+
     return optimalSolution;
 }
 
