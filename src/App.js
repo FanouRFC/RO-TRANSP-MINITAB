@@ -28,6 +28,7 @@ const initialState = {
 
 
 // Juste fikafika mampalaky debug, tode sady resoudre fotsiny kitianlah de mijery inspect XD
+// Le ambany ito Cas degeneree
 let debugState = {
   isLoading: false,
   isGettingStarted: false,
@@ -58,6 +59,8 @@ let debugState = {
   zBase: 0,
   zOptimal: 0,
 };
+
+
 
 // let debugState = {
 //   isLoading: false,

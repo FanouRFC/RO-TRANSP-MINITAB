@@ -1,4 +1,4 @@
-const epsilon = 0.000000000000000000000001;
+const epsilon = 0.000001;
 // création de l'objet matrice
 export function createMatrice(valeurs, a, b, nbA, nbB){
     // a: les quantités disponibles dans les magasins de dépôt respectifs
@@ -136,51 +136,61 @@ export function generateBaseSolution(tabIndex, matrice, qteA, qteB, maxiOfTab){
         return {casD: false, baseSolution};
     }else{
         const connectedComponents = graph.findConnectedComponents();
-        console.log('Composantes connexes: ', connectedComponents);
-        let fooEdge = {};
-        let head = '';
-        for(let i = 0; i < connectedComponents.length; i++){
-            if(head==''){
-                connectedComponents[i].forEach(key => {
-                    if(key.slice(0,1)=='a'&&head==''){
-                        head += key;
+        console.log('Composantes connexes trouvées : ', connectedComponents);
+        
+        // 1. On choisit un nœud de référence absolu dans la TOUTE PREMIÈRE composante (ex: un magasin 'a')
+        let globalAnchor = '';
+        for (let key of connectedComponents[0]) {
+            if (key.startsWith('a')) {
+                globalAnchor = key;
+                break;
+            }
+        }
+        // Si aucun 'a' n'est trouvé, on prend le premier élément par défaut
+        if (!globalAnchor) globalAnchor = [...connectedComponents[0]][0];
+
+        // 2. On boucle sur TOUTES les AUTRES composantes pour les relier à notre ancre globale
+        for (let i = 1; i < connectedComponents.length; i++) {
+            let targetNode = '';
+            
+            // Si l'ancre globale est un 'a', on cherche un 'b' dans la composante cible pour créer une arête valide 'axbx'
+            if (globalAnchor.startsWith('a')) {
+                for (let key of connectedComponents[i]) {
+                    if (key.startsWith('b')) {
+                        targetNode = key;
+                        break;
                     }
-                })
-            }else{
-                connectedComponents[i].forEach(key => {
-                    if(key.slice(0,1)=='b'&&head!=''){
-                        head += key;
-                        baseSolution[`${head}`] = epsilon;
-
-                        // --- AJOUT : Enclenchement d'une étape spéciale "Cas dégénéré" ---
-                        etapes.push({
-                            etape: numEtape++,
-                            estCasDegenere: true,
-                            caseChoisie: head,
-                            coutUnitaire: 0, 
-                            quantiteAllouee: 'Epsilon',
-                            action: `Résolution du cas degenere`,
-                            etatMatrice: {...matrice},
-                            disponibilitesRestantes: [...a],
-                            demandesRestantes: [...b],
-                            solutionIntermediaire: {...baseSolution} // Contient le epsilon
-                        });
-
-                        head = '';
+                }
+            } else { // Si l'ancre est un 'b', on cherche un 'a'
+                for (let key of connectedComponents[i]) {
+                    if (key.startsWith('a')) {
+                        targetNode = key;
+                        break;
                     }
-
-                    
-                })
-                
-                if(i<(connectedComponents.length-1)){
-
-                    connectedComponents[i].forEach(key => {
-                        if(key.slice(0,1)=='a'&&head==''){
-                            head += key;
-                        }
-                    })
                 }
             }
+
+            // Si le type opposé n'est pas trouvé, on prend le premier disponible
+            if (!targetNode) targetNode = [...connectedComponents[i]][0];
+
+            // On forme la clé de la case à occuper avec epsilon (ex: "a1b3")
+            let caseEpsilon = globalAnchor.startsWith('a') ? `${globalAnchor}${targetNode}` : `${targetNode}${globalAnchor}`;
+            
+            baseSolution[caseEpsilon] = epsilon;
+
+            // --- Enregistrement de l'étape spéciale "Cas dégénéré" ---
+            etapes.push({
+                etape: numEtape++,
+                estCasDegenere: true,
+                caseChoisie: caseEpsilon,
+                coutUnitaire: 0, 
+                quantiteAllouee: 'Epsilon',
+                action: `Reconnexion de la composante ${i + 1} à l'ancre ${globalAnchor}`,
+                etatMatrice: {...matrice},
+                disponibilitesRestantes: [...a],
+                demandesRestantes: [...b],
+                solutionIntermediaire: {...baseSolution}
+            });
         }
         console.log("Mis en place du cas deg: ");
         for (let i = 0; i < etapes.length; ++i)
@@ -510,6 +520,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
             gain = chemin.gain;
             cheminPrise = chemin.chemin;
             substitueValue = chemin.substitueValue;
+            caseGagnante = chemin.substitue;
         }
     })
 
