@@ -51,6 +51,8 @@ const Form3 = () => {
             const {baseSolution, casD} = s; 
             let preOptimalSolution = baseSolution;
             let optimal = false;
+            
+            console.log("Etapes potentiels : ");
         while(!optimal){
             console.log(preOptimalSolution)
             const potentiels = generatePotentiels(preOptimalSolution,original, minitabData.nbLigne, minitabData.nbColonne);

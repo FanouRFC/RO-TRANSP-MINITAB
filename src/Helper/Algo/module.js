@@ -194,6 +194,11 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
     const list = [];
     const potentielsXY = {};
     const nodePotentiel = {};
+
+    // --- AJOUT : Tableau d'étapes pour les potentiels ---
+    let etapesPotentiels = [];
+    let numEtape = 1;
+
     for(let i = 1; i <= nbA; i++){
         list[i-1] = new LinkedList();
         list[i-1].append(undefined, `a${i}`);
@@ -210,13 +215,32 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
     Object.keys(potentielsXY).forEach(id => {
         if(maxId != NaN && potentielsXY[`${id}`]==maxPXY) maxId = id;
     })
+
+    // Fixation du premier potentiel de départ (arbitraire ou max)
     const source = maxId.slice(0,2);
     list[`${Number(source.slice(1,2))-1}`].insertPotentiel(0, source);
     nodePotentiel[source] = 0;
+    
+    etapesPotentiels.push({
+        etape: numEtape++,
+        description: `Initialisation du potentiel de référence pour le nœud source`,
+        noeudModifie: source,
+        valeurObtenue: 0,
+        etatPotentiels: { ...nodePotentiel }
+    });
+
     Object.keys(potentielsXY).forEach(id => {
         if(source==id.slice(0,2)) {
             list[`${Number(source.slice(1,2))-1}`].insertPotentiel(potentielsXY[id], id.slice(2,4));
             nodePotentiel[id.slice(2,4)] = potentielsXY[id];
+
+            etapesPotentiels.push({
+                etape: numEtape++,
+                description: `Calcul du potentiel de la destination lié à la case de base ${id}`,
+                noeudModifie: id.slice(2,4),
+                valeurObtenue: potentielsXY[id],
+                etatPotentiels: { ...nodePotentiel }
+            });
         }
     })
     let isPotentielFilled = false;
@@ -231,6 +255,15 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
                         const potentiel = nodePotentiel[index]-potentielsXY[id];
                         list[i].insertPotentiel(potentiel,label);
                         nodePotentiel[label] = potentiel;
+
+                        etapesPotentiels.push({
+                            etape: numEtape++,
+                            description: `Calcul du potentiel de la ligne ${label} à partir de la destination ${index} (Equation: u + v = C)`,
+                            noeudModifie: label,
+                            valeurObtenue: potentiel,
+                            etatPotentiels: { ...nodePotentiel }
+                        });
+
                     }
                 })
             } else {
@@ -241,6 +274,15 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
                         const potentiel = nodePotentiel[label] + potentielsXY[id];
                         list[i].insertPotentiel(potentiel, index);
                         nodePotentiel[index] = potentiel;
+
+                        etapesPotentiels.push({
+                            etape: numEtape++,
+                            description: `Calcul du potentiel de la destination ${index} à partir de la ligne ${label} (Equation: u + v = C)`,
+                            noeudModifie: index,
+                            valeurObtenue: potentiel,
+                            etatPotentiels: { ...nodePotentiel }
+                        });
+
                     }
                 })
             }
@@ -250,6 +292,9 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
             isPotentielFilled = true;
         }   
     }
+
+    for (let i = 0; i < etapesPotentiels.length; ++i)
+        console.log(etapesPotentiels[i]);
 
     const potentiels = [
         nodePotentiel,
