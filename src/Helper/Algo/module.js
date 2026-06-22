@@ -220,7 +220,7 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
     const source = maxId.slice(0,2);
     list[`${Number(source.slice(1,2))-1}`].insertPotentiel(0, source);
     nodePotentiel[source] = 0;
-    
+
     etapesPotentiels.push({
         etape: numEtape++,
         description: `Initialisation du potentiel de référence pour le nœud source`,
@@ -308,14 +308,50 @@ export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
     let allDeltas = [];
     const nodePotentiel = potentiels[0];
     const edgePotentiel = potentiels[1];
+
+    // --- AJOUT : Structures pour l'historique et le tableau d'affichage ---
+    let etapesDeltas = [];
+    let tableauMarginal = {}; // Contiendra la valeur brute ou "-" si c'est une case de base
+    let numEtape = 1;
+
     Object.keys(matriceOriginal).forEach(index => {
         if(!Object.keys(edgePotentiel).includes(index)){
             const sourceNode = index.slice(0,2);
             const targetNode = index.slice(2,4);
-            let delta = nodePotentiel[sourceNode] + matriceOriginal[index] - nodePotentiel[targetNode];
-            allDeltas.push({[`${index}`] : delta});
+            // let delta = nodePotentiel[sourceNode] + matriceOriginal[index] - nodePotentiel[targetNode];
+            // allDeltas.push({[`${index}`] : delta});
+
+            const i = sourceNode.slice(1);
+            const j = targetNode.slice(1);
+
+            // Si la case n'est pas une case de base (c'est une case vide)
+            if (!Object.keys(edgePotentiel).includes(index)) {
+                const u_i = nodePotentiel[sourceNode];
+                const v_j = nodePotentiel[targetNode];
+                const c_ij = matriceOriginal[index];
+                
+                // Formule : Δ = u_i + c_ij - v_j
+                let delta = u_i + c_ij - v_j;
+                
+                allDeltas.push({ [`${index}`]: delta });
+                tableauMarginal[index] = delta;
+
+                // Ajout de la ligne d'étape détaillée
+                etapesDeltas.push({
+                    etape: numEtape++,
+                    case: index,
+                    calcul: `δ(${i}, ${j}) = ${u_i} + ${c_ij} - ${v_j} = ${delta}`
+                });
+            } else {
+                // Case de base occupée
+                tableauMarginal[index] = "-";
+            }
         }
     })
+
+    for (let i = 0; i < etapesDeltas.length; ++i)
+        console.log(etapesDeltas[i])
+    console.log("Tableau marginal : ", tableauMarginal)
 
     return allDeltas;
 }
