@@ -4,6 +4,7 @@ import { Graph, GifContainer, SolutionLayoutTitle, SolutionLayoutContainer, TagD
 import BaseSGraph from '../../Component/Graph';
 import FinalSGraph from '../../Component/Graph/optimalGraph';
 import Flow from '../../Component/Graph/LeftNode'
+import "../../App.css"
 
 const SolutionLayout = () => {
     const { minitabData, dispatch } = useContext(MinitabContext)
@@ -18,10 +19,39 @@ const SolutionLayout = () => {
                 </SolutionLayoutTitle>
                     <SolutionLayoutContainer>
                 {minitabData.baseSolution ? (<>
-                        <div className='solutions'>
+                            <div className='solutions'>
                             <p className='solutions-title'>
-                                Solution de base {minitabData.casD && (<TagDeg>Cas Dégénéré</TagDeg>)}
+                                Solution de base {"(Minitab)"} {minitabData.casD && (<TagDeg>Cas Dégénéré</TagDeg>)}
                             </p>
+                                <table className="transport-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        {Array.from({ length: minitabData.nbColonne }, (_, i) => (
+                                            <th key={i}>{i + 1}</th>
+                                        ))}
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {Array.from({ length: minitabData.nbLigne }, (_, i) => (
+                                        <tr key={i}>
+                                            <th>{String.fromCharCode(65 + i)}</th>
+
+                                            {Array.from({ length: minitabData.nbColonne }, (_, j) => {
+                                                const key = `a${i + 1}b${j + 1}`;
+                                                const value = minitabData.baseSolution[key];
+
+                                                return (
+                                                    <td key={j}>
+                                                        {value !== undefined ? value == 0.000001 ? "ε" : value : "-"}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                             <p className='solutions-p'>
                                 Voici la représentation graphique de la solution de base dont le coût total de transport est de :
                                 <br/>
@@ -34,6 +64,32 @@ const SolutionLayout = () => {
                             <p className='solutions-title'>
                                 Solution optimale
                             </p>
+                            <table className="transport-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        {Array.from({ length: minitabData.nbColonne }, (_, i) => (
+                                            <th key={i}>{i + 1}</th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array.from({ length: minitabData.nbLigne }, (_, i) => (
+                                        <tr key={i}>
+                                            <th>{String.fromCharCode(65 + i)}</th>
+                                            {Array.from({ length: minitabData.nbColonne }, (_, j) => {
+                                                const key = `a${i + 1}b${j + 1}`;
+                                                const value = minitabData.finalSolution[key];
+                                                return (
+                                                    <td key={j}>
+                                                        {value !== undefined ? (Math.round(value) == 0) ? "ε" : Math.round(value) : ""}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                             <p className='solutions-p'>
                                 Voici la représentation graphique de la solution optimale dont le coût total de transport est de :
                                 <br/>
