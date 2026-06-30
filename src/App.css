@@ -25,3 +25,25 @@ body {
   /* background-color: #e1e9fc; */
   font-family: sans-serif
 }
+
+.transport-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.transport-table th,
+.transport-table td {
+  border: 1px solid #d9d9d9;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.transport-table thead th,
+.transport-table tbody th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.transport-table tr:hover td {
+  background: #f8f9ff;
+}
