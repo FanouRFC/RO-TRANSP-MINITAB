@@ -60,6 +60,37 @@ const initialState = {
 //   zOptimal: 0,
 // };
 
+// let debugState = {
+//   isLoading: false,
+//   isGettingStarted: false,
+//   isGifDisplayed: false,
+
+//   nbLigne: 4,
+//   nbColonne: 6,
+
+//   a: [25, 30, 10, 45],
+//   b: [20,15,35,10,20,10],
+
+//   isQteValid: true,
+//   errorQte: false,
+
+//   cout: [
+//     "45","60","45","30","45","50",
+//     "35","15","35","35","25","25",
+//     "30","25","45","55","15","55",
+//     "30","40","55","10","10","50",
+//   ],
+
+//   isCoutValid: false,
+
+//   baseSolution: null,
+//   finalSolution: null,
+
+//   casD: true,
+//   zBase: 0,
+//   zOptimal: 0,
+// };
+
 let debugState = {
   isLoading: false,
   isGettingStarted: false,
@@ -68,17 +99,17 @@ let debugState = {
   nbLigne: 4,
   nbColonne: 6,
 
-  a: [25, 30, 10, 45],
-  b: [20,15,35,10,20,10],
+  a: [18, 32, 14, 9],
+  b: [9,11,28,6,14,5],
 
   isQteValid: true,
   errorQte: false,
 
   cout: [
-    "45","60","45","30","45","50",
-    "35","15","35","35","25","25",
-    "30","25","45","55","15","55",
-    "30","40","55","10","10","50",
+    "24","22","61","49","83","35",
+    "23","39","78","28","65","42",
+    "67","56","92","24","53","54",
+    "71","43","91","67","40","49",
   ],
 
   isCoutValid: false,

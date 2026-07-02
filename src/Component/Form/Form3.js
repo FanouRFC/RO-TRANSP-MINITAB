@@ -50,18 +50,29 @@ const Form3 = () => {
             const original = createMatrice(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
             // const {baseSolution, casD} = s; 
             // console.log("ito le s : " , s)
+            // let baseSolution = {
+            //     a1b1: 15,
+            //     a1b3: 0.000001,
+            //     a1b4: 10,
+            //     a2b2: 15,
+            //     a2b5: 15,
+            //     a3b1: 5,
+            //     a3b5: 5,
+            //     a4b3: 35,
+            //     a4b6: 10
+            // }
             let baseSolution = {
-                a1b1: 15,
-                a1b3: 0.000001,
-                a1b4: 10,
-                a2b2: 15,
-                a2b5: 15,
-                a3b1: 5,
+                a1b2: 11,
+                a1b3: 2,
+                a1b6: 5,
+                a2b1: 9,
+                a2b3: 23,
+                a3b3: 3,
+                a3b4: 6,
                 a3b5: 5,
-                a4b3: 35,
-                a4b6: 10
+                a4b5: 9
             }
-            let casD = true;
+            let casD = false;
             // let baseSolution = 
             let preOptimalSolution = baseSolution;
             let optimal = false;
