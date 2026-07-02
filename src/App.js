@@ -29,6 +29,37 @@ const initialState = {
 
 // Juste fikafika mampalaky debug, tode sady resoudre fotsiny kitianlah de mijery inspect XD
 // Le ambany ito Cas degeneree
+// let debugState = {
+//   isLoading: false,
+//   isGettingStarted: false,
+//   isGifDisplayed: false,
+
+//   nbLigne: 4,
+//   nbColonne: 6,
+
+//   a: [20, 30, 40, 10],
+//   b: [20,30,10,20,10,10],
+
+//   isQteValid: true,
+//   errorQte: false,
+
+//   cout: [
+//     "45","60","45","30","45","50",
+//     "35","15","35","35","25","25",
+//     "30","25","45","55","15","55",
+//     "30","40","55","10","10","50",
+//   ],
+
+//   isCoutValid: false,
+
+//   baseSolution: null,
+//   finalSolution: null,
+
+//   casD: true,
+//   zBase: 0,
+//   zOptimal: 0,
+// };
+
 let debugState = {
   isLoading: false,
   isGettingStarted: false,
@@ -37,8 +68,8 @@ let debugState = {
   nbLigne: 4,
   nbColonne: 6,
 
-  a: [20, 30, 40, 10],
-  b: [20,30,10,20,10,10],
+  a: [25, 30, 10, 45],
+  b: [20,15,35,10,20,10],
 
   isQteValid: true,
   errorQte: false,

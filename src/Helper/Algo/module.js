@@ -492,23 +492,31 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
         }
     }
 
-    let gainEstime = loopMin * headValue;
-    chemins.push({substitue: headIndex, gain: loopMin*headValue, substitueValue: loopMin, chemin: loopPath});
+    let gainEstime = 0;
+    if (loopMin == epsilon || headValue == epsilon)
+    {
+        gainEstime = (headValue < 0) ? -epsilon : epsilon;
+    }
+    else
+    {
+        gainEstime = loopMin * headValue;
+    }
+    chemins.push({substitue: headIndex, gain: gainEstime, substitueValue: loopMin, chemin: loopPath});
 
     // --- AJOUT : Sauvegarde des détails du chemin évalué ---
     let descriptionChemin = loopPath.map((caseId, idx) => {
-        return `${caseId}(${idx % 2 === 0 ? '+' : '-'})`;
-    }).join(' -> ') + ` -> ${headIndex}`;
+            return `${caseId}(${idx % 2 === 0 ? '+' : '-'})`;
+        }).join(' -> ') + ` -> ${headIndex}`;
 
-    etapesOptimisation.cheminsEvalues.push({
-        caseEntrante: headIndex,
-        coutMarginal: headValue,
-        cheminForme: descriptionChemin,
-        quantiteMax: loopMin,
-        gainTotal: gainEstime
-    });
+        etapesOptimisation.cheminsEvalues.push({
+            caseEntrante: headIndex,
+            coutMarginal: headValue,
+            cheminForme: descriptionChemin,
+            quantiteMax: loopMin,
+            gainTotal: gainEstime
+        });
 
-}
+    }
 
     let gain = 0;
     let cheminPrise = [];
@@ -530,21 +538,42 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
             caseEntrante: caseGagnante,
             quantiteDeplacee: substitueValue,
             gainAmelioration: gain,
-            cheminDetaille: cheminPrise.map((caseId, idx) => ({
-                case: caseId,
-                signe: idx % 2 === 0 ? '+' : '-',
-                ancienneValeur: fullMatriceBase[caseId],
-                nouvelleValeur: idx % 2 === 0 ? fullMatriceBase[caseId] + substitueValue : fullMatriceBase[caseId] - substitueValue
-            }))
+            cheminDetaille: cheminPrise.map((caseId, idx) => {
+                const estPositif = idx % 2 === 0;
+                const valeurDeBase = fullMatriceBase[caseId];
+                
+                let nouvelleValeur = 0;
+                if (valeurDeBase === epsilon || Math.abs(substitueValue) == epsilon) {
+                    nouvelleValeur = estPositif ? Math.abs(substitueValue) : -Math.abs(substitueValue);
+                } else {
+                    nouvelleValeur = estPositif ? valeurDeBase + substitueValue : valeurDeBase - substitueValue;
+                }
+
+                return {
+                    case: caseId,
+                    signe: estPositif ? '+' : '-',
+                    ancienneValeur: valeurDeBase,
+                    nouvelleValeur: nouvelleValeur
+                };
+            })
         };
     }
 
     for(let i = 0; i < cheminPrise.length; i++){
-        if(i%2!=0){
-            fullMatriceBase[cheminPrise[i]] -= substitueValue;
-        }else {
-            fullMatriceBase[cheminPrise[i]] += substitueValue;
+        const estPositif = i%2==0;
+        let valeurDeBase = fullMatriceBase[cheminPrise[i]];
+        let nouvelleValeur = 0;
+        if (valeurDeBase === epsilon || Math.abs(substitueValue) == epsilon) {
+            nouvelleValeur = estPositif ? Math.abs(substitueValue) : -Math.abs(substitueValue);
+        } else {
+            nouvelleValeur = estPositif ? valeurDeBase + substitueValue : valeurDeBase - substitueValue;
         }
+        // if(i%2!=0){
+        //     fullMatriceBase[cheminPrise[i]] -= substitueValue;
+        // }else {
+        //     fullMatriceBase[cheminPrise[i]] += substitueValue;
+        // }
+        fullMatriceBase[cheminPrise[i]] = nouvelleValeur;
     }
     
     let ids = Object.keys(fullMatriceBase);

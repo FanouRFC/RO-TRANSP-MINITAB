@@ -48,7 +48,21 @@ const Form3 = () => {
 
             const s = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
             const original = createMatrice(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
-            const {baseSolution, casD} = s; 
+            // const {baseSolution, casD} = s; 
+            // console.log("ito le s : " , s)
+            let baseSolution = {
+                a1b1: 15,
+                a1b3: 0.000001,
+                a1b4: 10,
+                a2b2: 15,
+                a2b5: 15,
+                a3b1: 5,
+                a3b5: 5,
+                a4b3: 35,
+                a4b6: 10
+            }
+            let casD = true;
+            // let baseSolution = 
             let preOptimalSolution = baseSolution;
             let optimal = false;
             
@@ -56,12 +70,14 @@ const Form3 = () => {
         while(!optimal){
             console.log(preOptimalSolution)
             const potentiels = generatePotentiels(preOptimalSolution,original, minitabData.nbLigne, minitabData.nbColonne);
+            console.log("LES Potentiels : ",potentiels )
         
             // Calculer Delta(x,y) = Vx + C(x,y) - Vy pour les cases vides c-a-d les couts marginaux
         
             const deltas = deltaXY(preOptimalSolution, potentiels, original);
         
             // Tant qu'il existe Delta(x,y) < 0 => substitution de vecteur et refaire les étapes
+            // console.log("LES DELATAS : ",deltas )
             let isNegativeExit = false;
             deltas.forEach(delta=>{
                 if(Object.values(delta)[0]<0){
