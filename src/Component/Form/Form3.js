@@ -107,7 +107,8 @@ const Form3 = () => {
                     potentiels: etapesPotentiels,
                     deltas: etapesDeltas,
                     tableauMarginal: tableauMarginal,
-                    optimisation: etapesOptimisation
+                    optimisation: etapesOptimisation,
+                    currentSolution: preOptimalSolution
                 });
 
                 preOptimalSolution = optimalSolution;
@@ -127,7 +128,8 @@ const Form3 = () => {
                         potentiels: etapesPotentiels,
                         deltas: etapesDeltas,
                         tableauMarginal: tableauMarginal,
-                        optimisation: null // Terminé
+                        optimisation: null, // Terminé,
+                        currentSolution: preOptimalSolution
                     });
                     optimal = true;
                 }

@@ -7,6 +7,7 @@ import FormLayout from './Layouts/FormLayout';
 import SolutionLayout from './Layouts/SolutionLayout';
 import BaseSolutionStepsLayout from './Layouts/BaseSolutionStepsLayout';
 import { MinitabContext } from './Context/MinitabContext';
+import IterationStepsLayout from './Layouts/IterationStepsLayout';
 
 const initialState = {
     isLoading : true,
@@ -125,6 +126,71 @@ const initialState = {
 
 
 
+// let debugState = {
+//   isLoading: false,
+//   isGettingStarted: false,
+//   isGifDisplayed: false,
+
+//   nbLigne: 4,
+//   nbColonne: 6,
+
+//   a: [18, 32, 14, 9],
+//   b: [9,11,28,6,14,5],
+
+//   isQteValid: true,
+//   errorQte: false,
+
+//   cout: [
+//     "24","22","61","49","83","35",
+//     "23","39","78","28","65","42",
+//     "67","56","92","24","53","54",
+//     "71","43","91","67","40","49",
+//   ],
+
+//   isCoutValid: false,
+
+//   baseSolution: null,
+//   finalSolution: null,
+
+//   casD: false,
+//   zBase: 0,
+//   zOptimal: 0,
+// };
+
+// let debugState = {
+//   isLoading: false,
+//   isGettingStarted: false,
+//   isGifDisplayed: false,
+
+//   nbLigne: 4,
+//   nbColonne: 6,
+
+//   a: [18, 32, 14, 9],
+//   b: [9,11,28,6,14,5],
+
+//   isQteValid: true,
+//   errorQte: false,
+
+//   cout: [
+//     "24","22","61","49","83","35",
+//     "23","39","78","28","65","42",
+//     "67","56","92","24","53","54",
+//     "71","43","91","67","40","49",
+//   ],
+
+//   isCoutValid: false,
+
+//   baseSolution: null,
+//   finalSolution: null,
+
+//   casD: false,
+//   zBase: 0,
+//   zOptimal: 0,
+// };
+
+
+
+// Real cas degenere hoan MINITAB
 let debugState = {
   isLoading: false,
   isGettingStarted: false,
@@ -133,8 +199,8 @@ let debugState = {
   nbLigne: 4,
   nbColonne: 6,
 
-  a: [18, 32, 14, 9],
-  b: [9,11,28,6,14,5],
+  a: [20, 15, 25, 10],
+  b: [20, 10, 5, 15, 10, 10],
 
   isQteValid: true,
   errorQte: false,
@@ -200,8 +266,9 @@ const App = () => {
         <>
           <Container>
             <FormLayout/>
-            <BaseSolutionStepsLayout/>
+            {/* <BaseSolutionStepsLayout/> */}
             {/* <SolutionLayout/> */}
+            <IterationStepsLayout/>
           </Container>
         </>
       </MinitabContext.Provider>

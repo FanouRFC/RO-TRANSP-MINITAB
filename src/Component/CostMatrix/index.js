@@ -13,8 +13,6 @@ const CostMatrix = ({
     originalMatrix
 }) => {
 
-    console.log("original ", originalMatrix)
-
     return (
 
         <table className="transport-table">

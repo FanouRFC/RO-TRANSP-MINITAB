@@ -3,7 +3,6 @@ import { MinitabContext } from '../../Context/MinitabContext';
 import { Graph, GifContainer, SolutionLayoutTitle, SolutionLayoutContainer, TagDeg } from './SolutionLayout.Style';
 import BaseSGraph from '../../Component/Graph';
 import FinalSGraph from '../../Component/Graph/optimalGraph';
-import Flow from '../../Component/Graph/LeftNode'
 import "../../App.css"
 
 const SolutionLayout = () => {

@@ -27,50 +27,52 @@ const BaseSolutionStepsLayout = () => {
 
                 <StepsLayoutContainer>
 
-                    {minitabData.etapesData.solutionDeBase.map((etape, index) => (
+                    {minitabData.etapesData.solutionDeBase.map((etape, index) => {
+                        // if (minitabData.casD && index + 1 == minitabData.etapesData.solutionDeBase.length) return(<></>);
+                        return (
+                            <div className="solutions" key={index}>
 
-                        <div className="solutions" key={index}>
+                                <p className="solutions-title">
+                                    Étape {index + 1}
+                                </p>
 
-                            <p className="solutions-title">
-                                Étape {index + 1}
-                            </p>
+                                {/* 🔥 2 MATRICES COTE A COTE */}
+                                <div className="step-matrices">
 
-                            {/* 🔥 2 MATRICES COTE A COTE */}
-                            <div className="step-matrices">
+                                    <div className="matrix-box">
+                                        <CostMatrix
+                                            nbLigne={minitabData.nbLigne}
+                                            nbColonne={minitabData.nbColonne}
+                                            etatMatrice={etape.etatMatrice}
+                                            disponibilites={minitabData.a}
+                                            demandes={minitabData.b}
+                                            originalMatrix={minitabData.cout}
+                                        />
+                                    </div>
 
-                                <div className="matrix-box">
-                                    <CostMatrix
-                                        nbLigne={minitabData.nbLigne}
-                                        nbColonne={minitabData.nbColonne}
-                                        etatMatrice={etape.etatMatrice}
-                                        disponibilites={minitabData.a}
-                                        demandes={minitabData.b}
-                                        originalMatrix={minitabData.cout}
-                                    />
+                                    <div className="matrix-box">
+                                        <SolutionMatrix
+                                            nbLigne={minitabData.nbLigne}
+                                            nbColonne={minitabData.nbColonne}
+                                            etatMatrice={etape.etatMatrice}
+                                            solution={etape.solutionIntermediaire}
+                                            disponibilites={etape.disponibilitesRestantes}
+                                            demandes={etape.demandesRestantes}
+                                        />
+                                    </div>
+
                                 </div>
 
-                                <div className="matrix-box">
-                                    <SolutionMatrix
-                                        nbLigne={minitabData.nbLigne}
-                                        nbColonne={minitabData.nbColonne}
-                                        etatMatrice={etape.etatMatrice}
-                                        solution={etape.solutionIntermediaire}
-                                        disponibilites={etape.disponibilitesRestantes}
-                                        demandes={etape.demandesRestantes}
-                                    />
-                                </div>
+                                {/* {etape.action && (
+                                    <p className="solutions-p">
+                                        {etape.action}
+                                    </p>
+                                )} */}
 
                             </div>
 
-                            {etape.action && (
-                                <p className="solutions-p">
-                                    {etape.action}
-                                </p>
-                            )}
-
-                        </div>
-
-                    ))}
+                        );
+                    })}
 
                 </StepsLayoutContainer>
 
