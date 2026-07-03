@@ -60,14 +60,14 @@ function CustomNode({ data }) {
     );
 }
 
-function GraphPotentiel({ currentSolution, etatPotentiel }) {
+function GraphPotentiel({ currentSolution, etatPotentiel , showMid = true}) {
     const { minitabData } = useContext(MinitabContext);
 
     let initialNodes = [];
     let lettre = 'A';
 
     const nodes = Object.keys(currentSolution);
-    console.log("EtatPotentiel", etatPotentiel)
+    // console.log("EtatPotentiel", etatPotentiel)
 
     // Noeuds de gauche (A, B, C...)
     for (let i = 1; i <= parseInt(minitabData.nbLigne); i++) {        
@@ -136,39 +136,39 @@ function GraphPotentiel({ currentSolution, etatPotentiel }) {
     }
 
     const initialEdges = [];
-    
+    if(showMid)
+    {
+        for (let i = 0; i < nodes.length; i++) {
+            const [, a, b] = nodes[i].match(/^a(\d+)b(\d+)$/);
+            const ligne = parseInt(a, 10);
+            const colonne = parseInt(b, 10);
+            const index = (ligne - 1) * Number(minitabData.nbColonne) + (colonne - 1);
+            // console.log("valeur : ", parseInt(minitabData.cout[index], 10))
+            initialEdges.push({
+                id: nodes[i],
+                source: `a${ligne}`,
+                target: `b${colonne}`,
 
-    for (let i = 0; i < nodes.length; i++) {
-        const [, a, b] = nodes[i].match(/^a(\d+)b(\d+)$/);
-        const ligne = parseInt(a, 10);
-        const colonne = parseInt(b, 10);
-        const index = (ligne - 1) * Number(minitabData.nbColonne) + (colonne - 1);
-        // console.log("valeur : ", parseInt(minitabData.cout[index], 10))
-        initialEdges.push({
-            id: nodes[i],
-            source: `a${ligne}`,
-            target: `b${colonne}`,
+                type: 'custom',
 
-            type: 'custom',
+                data: {
+                    label: showMid? (parseInt(minitabData.cout[index], 10) === 0? "ε": parseInt(minitabData.cout[index], 10))
+                            : "",
+                    index: i,
+                },
 
-            data: {
-                label:
-                    parseInt(minitabData.cout[index], 10) === 0
-                        ? "ε"
-                        : parseInt(minitabData.cout[index], 10),
-                index: i,
-            },
+                markerEnd: {
+                    type: 'arrowclosed',
+                },
 
-            markerEnd: {
-                type: 'arrowclosed',
-            },
-
-            style: {
-                stroke: '#000',
-                strokeWidth: 2,
-            },
-        });
+                style: {
+                    stroke: '#000',
+                    strokeWidth: 2,
+                },
+            });
+        }
     }
+
 
     const edgeTypes = {
             custom: CustomEdge,

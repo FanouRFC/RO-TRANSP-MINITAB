@@ -27,6 +27,21 @@ const IterationStepsLayout = () => {
                             <p className="solutions-title">
                                 Étape {index + 1}
                             </p>
+                                {/* Extra steps */}
+                            <div>
+                                <GraphPotentiel
+                                    currentSolution={etape.currentSolution}
+                                    etatPotentiel={{}}
+                                    showMid={false}
+                                />
+                            </div>
+                            <div>
+                                <GraphPotentiel
+                                    currentSolution={etape.currentSolution}
+                                    etatPotentiel={{}}
+                                    showMid={true}
+                                />
+                            </div>
                             {
                                 etape.potentiels.map((etapePotentiel, idxPotentiel) => (
                                     <div key={idxPotentiel}>
