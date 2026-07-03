@@ -40,7 +40,19 @@ export function generateBaseSolution(tabIndex, matrice, qteA, qteB, maxiOfTab){
 
     // --- AJOUT : Tableau pour stocker l'historique des étapes ---
     let etapes = [];
-    let numEtape = 1;
+    let numEtape = 0;
+    etapes.push({
+                etape: numEtape,
+                caseChoisie: indexOfMiniOfTab,
+                coutUnitaire: miniOfTab,
+                quantiteAllouee: 0,
+                action: "",
+                // On fait des copies profondes des objets pour figer l'état à cet instant T
+                etatMatrice: {...matrice}, 
+                disponibilitesRestantes: [...a],
+                demandesRestantes: [...b],
+                solutionIntermediaire: {...baseSolution}
+            });
        
     let stop = false;
     while(!stop){
@@ -127,16 +139,16 @@ export function generateBaseSolution(tabIndex, matrice, qteA, qteB, maxiOfTab){
         graph.addEdge(key.slice(0,2), key.slice(2,4));
     })
 
-    for (let i = 0; i < etapes.length; ++i)
-        console.log(etapes[i])
+    // for (let i = 0; i < etapes.length; ++i)
+    //     console.log(etapes[i])
 
     // console.log('cas dégénéré?: ', graph.isConnected() ? 'non' : 'oui');
 
     if(graph.isConnected()){
-        return {casD: false, baseSolution};
+        return {casD: false, baseSolution, etapes};
     }else{
         const connectedComponents = graph.findConnectedComponents();
-        console.log('Composantes connexes trouvées : ', connectedComponents);
+        // console.log('Composantes connexes trouvées : ', connectedComponents);
         
         // 1. On choisit un nœud de référence absolu dans la TOUTE PREMIÈRE composante (ex: un magasin 'a')
         let globalAnchor = '';
@@ -192,10 +204,10 @@ export function generateBaseSolution(tabIndex, matrice, qteA, qteB, maxiOfTab){
                 solutionIntermediaire: {...baseSolution}
             });
         }
-        console.log("Mis en place du cas deg: ");
-        for (let i = 0; i < etapes.length; ++i)
-            console.log(etapes[i])
-        return {casD: true, baseSolution};
+        // console.log("Mis en place du cas deg: ");
+        // for (let i = 0; i < etapes.length; ++i)
+        //     console.log(etapes[i])
+        return {casD: true, baseSolution, etapes};
     }
 }
 
@@ -303,15 +315,10 @@ export const generatePotentiels = (baseSolution, matriceOriginal, nbA, nbB) => {
         }   
     }
 
-    for (let i = 0; i < etapesPotentiels.length; ++i)
-        console.log(etapesPotentiels[i]);
+    // for (let i = 0; i < etapesPotentiels.length; ++i)
+    //     console.log(etapesPotentiels[i]);
 
-    const potentiels = [
-        nodePotentiel,
-        potentielsXY
-    ];
-
-    return potentiels;
+    return {nodePotentiel, potentielsXY, etapesPotentiels};
 }
 
 export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
@@ -359,11 +366,11 @@ export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
         }
     })
 
-    for (let i = 0; i < etapesDeltas.length; ++i)
-        console.log(etapesDeltas[i])
-    console.log("Tableau marginal : ", tableauMarginal)
+    // for (let i = 0; i < etapesDeltas.length; ++i)
+    //     console.log(etapesDeltas[i])
+    // console.log("Tableau marginal : ", tableauMarginal)
 
-    return allDeltas;
+    return {allDeltas, tableauMarginal, etapesDeltas};
 }
 
 export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, nbA, nbB) => {
@@ -584,13 +591,13 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
         }
     })
 
-    console.log("Etapes optimisation :")
-    console.log(etapesOptimisation)
-    // for (let i = 0; i < etapesOptimisation.length; ++i)
-    //     console.log(etapesOptimisation[i])
-    console.log("==================================================")
+    // console.log("Etapes optimisation :")
+    // console.log(etapesOptimisation)
+    // // for (let i = 0; i < etapesOptimisation.length; ++i)
+    // //     console.log(etapesOptimisation[i])
+    // console.log("==================================================")
 
-    return optimalSolution;
+    return {optimalSolution, etapesOptimisation};
 }
 
 const parcoursLigne = (ligne, numLigne) => {

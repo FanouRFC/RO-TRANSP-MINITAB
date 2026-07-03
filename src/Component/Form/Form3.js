@@ -45,8 +45,8 @@ const Form3 = () => {
         // const data = new FormData(e.target);
         // const cout = Object.fromEntries(data.entries());
         try{
-
-            const s = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
+            const { baseSolution, casD, etapes: etapesBase } = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
+            // const { baseSolution, casD, etapes: etapesBase } = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
             const original = createMatrice(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
             // const {baseSolution, casD} = s; 
             // console.log("ito le s : " , s)
@@ -61,53 +61,74 @@ const Form3 = () => {
             //     a4b3: 35,
             //     a4b6: 10
             // }
-            let baseSolution = {
-                a1b2: 11,
-                a1b3: 2,
-                a1b6: 5,
-                a2b1: 9,
-                a2b3: 23,
-                a3b3: 3,
-                a3b4: 6,
-                a3b5: 5,
-                a4b5: 9
-            }
-            let casD = false;
-            // let baseSolution = 
-            let preOptimalSolution = baseSolution;
+            // let baseSolution = {
+            //     a1b2: 11,
+            //     a1b3: 2,
+            //     a1b6: 5,
+            //     a2b1: 9,
+            //     a2b3: 23,
+            //     a3b3: 3,
+            //     a3b4: 6,
+            //     a3b5: 5,
+            //     a4b5: 9
+            // }
+
+            let preOptimalSolution = { ...baseSolution };
             let optimal = false;
+            let iteration = 1;
+
+            // --- STRUCTURE POUR RECEVOIR TOUTES LES ÉTAPES ---
+            let historiqueComplet = {
+                solutionDeBase: etapesBase, 
+                iterationsOptimisation: []  
+            };
             
-            console.log("Etapes potentiels : ");
         while(!optimal){
-            console.log(preOptimalSolution)
-            const potentiels = generatePotentiels(preOptimalSolution,original, minitabData.nbLigne, minitabData.nbColonne);
-            console.log("LES Potentiels : ",potentiels )
+           const { nodePotentiel, potentielsXY, etapesPotentiels } = generatePotentiels(preOptimalSolution, original, minitabData.nbLigne, minitabData.nbColonne);
+            // console.log("LES Potentiels : ",potentiels )
         
             // Calculer Delta(x,y) = Vx + C(x,y) - Vy pour les cases vides c-a-d les couts marginaux
         
-            const deltas = deltaXY(preOptimalSolution, potentiels, original);
+            const { allDeltas, tableauMarginal, etapesDeltas } = deltaXY(preOptimalSolution, [nodePotentiel, potentielsXY], original);
         
             // Tant qu'il existe Delta(x,y) < 0 => substitution de vecteur et refaire les étapes
             // console.log("LES DELATAS : ",deltas )
             let isNegativeExit = false;
-            deltas.forEach(delta=>{
+            allDeltas.forEach(delta=>{
                 if(Object.values(delta)[0]<0){
                     isNegativeExit = true;
                 }
             })
             if(isNegativeExit){
-                preOptimalSolution = generateOptimalSolution(preOptimalSolution,deltas,original,minitabData.nbLigne,minitabData.nbColonne);
-                console.log("neg")
+                const { optimalSolution, etapesOptimisation } = generateOptimalSolution(preOptimalSolution, allDeltas, original, minitabData.nbLigne, minitabData.nbColonne);
+                // Enregistrement des données de cette itération spécifique
+                historiqueComplet.iterationsOptimisation.push({
+                    numeroIteration: iteration++,
+                    potentiels: etapesPotentiels,
+                    deltas: etapesDeltas,
+                    tableauMarginal: tableauMarginal,
+                    optimisation: etapesOptimisation
+                });
+
+                preOptimalSolution = optimalSolution;
                 const graph = new Graph();
                 Object.keys(preOptimalSolution).forEach(key => {
                     graph.addEdge(key.slice(0,2), key.slice(2,4));
                 })
-                console.log('cas dégénéré?: ', graph.isConnected() ? 'non' : 'oui');
+                
                 if(graph.isConnected()){
-                    console.log("hehe")
+                    // console.log("hehe")
                     continue
                 }else{
-                    console.log("optimal dégénéré")
+                    // Pas de négatif -> La solution actuelle est optimale !
+                    // On enregistre quand même la dernière itération (sans étape d'optimisation car aucun transfert n'a lieu)
+                    historiqueComplet.iterationsOptimisation.push({
+                        numeroIteration: iteration,
+                        potentiels: etapesPotentiels,
+                        deltas: etapesDeltas,
+                        tableauMarginal: tableauMarginal,
+                        optimisation: null // Terminé
+                    });
                     optimal = true;
                 }
             }else{
@@ -116,12 +137,21 @@ const Form3 = () => {
         }
 
         const optimalSolution = preOptimalSolution;
-        
         const zValue = calculateZ(baseSolution, original);
         const zValueOptimal = calculateZ(optimalSolution, original);
-        console.log("z optimal", zValueOptimal)
-        // dispatch({type:'addCout', cout: Object.values(cout), bs: s, z: zValue});
-        dispatch({type:'addCout', cout: Object.values(cout), bs: baseSolution, casD: casD, z: zValue, os: optimalSolution, zOptimal: zValueOptimal});
+
+        console.log("Historique complet de l'algorithme :", historiqueComplet);
+
+        dispatch({
+            type: 'addCout', 
+            cout: Object.values(cout), 
+            bs: baseSolution, 
+            casD: casD, 
+            z: zValue, 
+            os: optimalSolution, 
+            zOptimal: zValueOptimal,
+            etapesData: historiqueComplet
+        });
         }catch(e){
             console.error(e.message)
         }

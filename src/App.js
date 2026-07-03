@@ -5,6 +5,7 @@ import Theme from './Core/Theme/index.ts';
 import { Container } from './Styles/styles';
 import FormLayout from './Layouts/FormLayout';
 import SolutionLayout from './Layouts/SolutionLayout';
+import BaseSolutionStepsLayout from './Layouts/BaseSolutionStepsLayout';
 import { MinitabContext } from './Context/MinitabContext';
 
 const initialState = {
@@ -61,9 +62,9 @@ const initialState = {
 // };
 
 // let debugState = {
-//   isLoading: false,
-//   isGettingStarted: false,
-//   isGifDisplayed: false,
+//   isLoading: true,
+//   isGettingStarted: true,
+//   isGifDisplayed: true,
 
 //   nbLigne: 4,
 //   nbColonne: 6,
@@ -91,39 +92,6 @@ const initialState = {
 //   zOptimal: 0,
 // };
 
-let debugState = {
-  isLoading: false,
-  isGettingStarted: false,
-  isGifDisplayed: false,
-
-  nbLigne: 4,
-  nbColonne: 6,
-
-  a: [18, 32, 14, 9],
-  b: [9,11,28,6,14,5],
-
-  isQteValid: true,
-  errorQte: false,
-
-  cout: [
-    "24","22","61","49","83","35",
-    "23","39","78","28","65","42",
-    "67","56","92","24","53","54",
-    "71","43","91","67","40","49",
-  ],
-
-  isCoutValid: false,
-
-  baseSolution: null,
-  finalSolution: null,
-
-  casD: true,
-  zBase: 0,
-  zOptimal: 0,
-};
-
-
-
 // let debugState = {
 //   isLoading: false,
 //   isGettingStarted: false,
@@ -150,10 +118,43 @@ let debugState = {
 //   baseSolution: null,
 //   finalSolution: null,
 
-//   casD: false,
+//   casD: true,
 //   zBase: 0,
 //   zOptimal: 0,
 // };
+
+
+
+let debugState = {
+  isLoading: false,
+  isGettingStarted: false,
+  isGifDisplayed: false,
+
+  nbLigne: 4,
+  nbColonne: 6,
+
+  a: [18, 32, 14, 9],
+  b: [9,11,28,6,14,5],
+
+  isQteValid: true,
+  errorQte: false,
+
+  cout: [
+    "24","22","61","49","83","35",
+    "23","39","78","28","65","42",
+    "67","56","92","24","53","54",
+    "71","43","91","67","40","49",
+  ],
+
+  isCoutValid: false,
+
+  baseSolution: null,
+  finalSolution: null,
+
+  casD: false,
+  zBase: 0,
+  zOptimal: 0,
+};
 
 const reducer = (state, action) => {
     switch(action.type){
@@ -164,7 +165,7 @@ const reducer = (state, action) => {
       case 'addQte':
         return {...state, a: action.a, b: action.b, isQteValid: true, errorQte: action.errorQte};
       case 'addCout':
-        return {...state, cout: action.cout, isCoutValid: true, baseSolution: action.bs, zBase: action.z, casD: action.casD, finalSolution: action.os, zOptimal: action.zOptimal, isGifDisplayed: false, isLoading: false};
+        return {...state, cout: action.cout, isCoutValid: true, baseSolution: action.bs, zBase: action.z, casD: action.casD, finalSolution: action.os, zOptimal: action.zOptimal, etapesData: action.etapesData, isGifDisplayed: false, isLoading: false};
       case 'editLigneColonne':
         return {...state, nbLigne: 0, nbColonne: 0, a: null, b: null, isQteValid: false, isCoutValid: false, cout: null, baseSolution: null, finalSolution: null, zBase: 0, zOptimal: 0, casD: false}
       case 'editQte':
@@ -189,7 +190,7 @@ const App = () => {
   const [minitabData, dispatch] = useReducer(reducer, debugState);
   
   useEffect( () =>{
-      console.log('Minitab Data:', minitabData);
+      // console.log('Minitab Data:', minitabData);
   },[minitabData]);
 
   return (
@@ -199,7 +200,8 @@ const App = () => {
         <>
           <Container>
             <FormLayout/>
-            <SolutionLayout/>
+            <BaseSolutionStepsLayout/>
+            {/* <SolutionLayout/> */}
           </Container>
         </>
       </MinitabContext.Provider>
