@@ -175,7 +175,7 @@ function GraphPotentiel({ currentSolution, etatPotentiel , showMid = true}) {
         };
 
     return (
-        <div className="graph" style={{ width: '360px', height: '540px' }}>
+        <div className="graph" style={{ width: '450px', height: '540px',}}>
             <ReactFlow
                 nodes={initialNodes}
                 edges={initialEdges}
