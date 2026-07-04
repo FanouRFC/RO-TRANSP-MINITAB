@@ -14,10 +14,8 @@ export const TagDeg = styled.span`
 
 export const Graph = styled.div`
   flex: 1;
-  height: 100vh;
   position: relative;
   display: flex;
-  overflow-y: scroll;
   .solution-container{
       flex: 1;
       display: flex;
@@ -56,8 +54,6 @@ export const GifContainer = styled.div`
 `
 
 export const SolutionLayoutTitle = styled.div`
-    position: sticky;
-    top: 0;
     background: red;
     width: 100%;
     z-index: 3;

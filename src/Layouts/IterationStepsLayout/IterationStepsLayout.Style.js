@@ -1,169 +1,183 @@
 import styled from 'styled-components';
 
+// --- Vos anciens styles conservés pour éviter les ruptures ---
 export const IterationGraph = styled.div`
-  flex: 1;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  overflow-y: scroll;
-  .solution-container{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    //   gap: ${({theme})=>theme.size(2)}px;
-        // border: 3px solid red;
+  width: 100%;
+  padding: 20px;
+  background-color: #f8f9fa;
+
+  .main-title {
+    font-size: 1.75rem;
+    color: #212529;
+    margin-bottom: 24px;
+    font-weight: 700;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 8px;
   }
-`
-
-export const SolutionLayoutContainer = styled.div`
-  display: flex;
-  background: #ffffff;
-  flex: 1;
-  padding: ${({theme})=>theme.size(2)}px 0;
-  .solutions{
-      flex: 2;
-    //   border: 1px solid green;
-      padding:  ${({theme})=>theme.size(0)}px ${({theme})=>theme.size(3)}px;
-      color: ${({theme})=>theme.colors.brandPrimary900};
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      gap: ${({theme})=>theme.size(1)}px;
-      .solutions-title{
-        width: 100%;
-        font-size: ${({theme}) => theme.size(2)+2}px;
-        font-weight: 600;
-        // border: 1px solid yellow;
-    }
-    .solutions-p{
-        width: 100%;
-        // flex: 1;
-        // border: 1px solid red;
-        span{
-            font-weight: 600;
-            // font-family: 'Orbitron';
-            // margin-top: 8px;
-            height: 24px;
-            border-radius: 4px;
-            background: ${({theme}) => theme.colors.vert};
-            padding: 4px 8px;
-            color: ${({theme}) => theme.colors.white};
-        }
-      }
-  }
-`
-
-
-export const StepsLayoutTitle = styled.div`
-    position: sticky;
-    top: 0;
-    z-index: 2;
-
-    background: ${({ theme }) => theme.colors.white};
-
-    padding: ${({ theme }) => theme.size(2) + 4}px
-             ${({ theme }) => theme.size(3)}px;
-
-    box-shadow: ${({ theme }) => theme.shadows.shadow1};
 `;
 
 export const StepsLayoutContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* Espace confortable entre chaque grande étape */
+`;
+
+export const SolutionLayoutContainer = styled.div`
+  /* Conservé au cas où il est utilisé ailleurs */
+`;
+
+export const StepsLayoutTitle = styled.h2`
+  /* Conservé au cas où il est utilisé ailleurs */
+`;
+
+
+// --- Les nouveaux styles requis par le Layout ---
+
+export const StepCard = styled.div`
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .section-divider {
+    border: 0;
+    border-top: 1px dashed #cbd5e1;
+    margin: 16px 0;
+    width: 100%;
+  }
+
+  .graph-wrapper {
+    background: #fdfdfd;
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .single-graph {
+    margin-top: 12px;
+  }
+
+  .gains-container {
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.size(4)}px;
-    padding: ${({ theme }) => theme.size(3)}px;
+    gap: 20px;
+  }
 
-    .solutions {
-        background: white;
-        border-radius: 8px;
-        box-shadow: ${({ theme }) => theme.shadows.shadow1};
-        padding: ${({ theme }) => theme.size(3)}px;
+  .gain-card-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .calcul-reference {
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 10px 0;
+  }
+
+  .matrix-preview {
+    margin-bottom: 12px;
+  }
+
+  .gain-formula {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #334155;
+    span { color: #dc2626; }
+    strong { color: #16a34a; font-size: 1.05rem; }
+  }
+`;
+
+export const StepHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  .step-badge {
+    background-color: #3b82f6;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  }
+`;
+
+export const SubSectionTitle = styled.h4`
+  font-size: 1.1rem;
+  color: #475569;
+  margin: 10px 0 0 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+`;
+
+export const GraphGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+`;
+
+export const DeltaCalculList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+
+  .delta-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      color: #0f172a;
+      font-size: 0.9rem;
+      font-weight: bold;
     }
+  }
+`;
 
-    .solutions-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 20px;
+export const GainHighlightBox = styled.div`
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  .highlight-icon {
+    font-size: 1.5rem;
+  }
+
+  .highlight-content {
+    p {
+      margin: 0 0 4px 0;
+      color: #166534;
+      font-size: 0.95rem;
     }
+  }
 
-    /* 🔥 IMPORTANT: 2 matrices côte à côte */
-    .step-matrices {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 40px;
-
-        flex-wrap: nowrap;
-        overflow-x: auto;
-    }
-
-    /* 🔥 container de chaque matrice */
-    .matrix-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        min-width: 420px;
-    }
-
-    /* ===== TABLE ===== */
-    .transport-table {
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
-
-    .transport-table td,
-    .transport-table th {
-        border: 1px solid #ddd;
-    }
-
-    /* ===== CELLULE ===== */
-    .cell {
-        position: relative;
-        width: 70px;
-        height: 70px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .cost {
-        // position: absolute;
-        // top: 4px;
-        // left: 6px;
-        font-size: 16px;
-        color: #666;
-        text-align: center
-    }
-
-    .allocation {
-        font-size: 20px;
-        font-weight: bold;
-        color: #000;
-    }
-
-    /* ===== CASES BLOQUÉES ===== */
-    .disabled {
-        background: repeating-linear-gradient(
-            45deg,
-            #d9d9d9,
-            #d9d9d9 6px,
-            #ffffff 6px,
-            #ffffff 12px
-        ) !important;
-    }
-
-    /* ===== SUPPRESSION EXTÉRIEUR ===== */
-    .outside-cell {
-        border: none !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-
-    .outside-row > th,
-    .outside-row > td {
-        border: none !important;
-        background: transparent !important;
-    }
+  .final-formula {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #14532d;
+    background: #dcfce7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
 `;
