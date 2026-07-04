@@ -4,6 +4,7 @@ import {
     IterationGraph,
     StepsLayoutContainer,
     StepCard,
+    StepsLayoutTitle,
     StepHeader,
     SubSectionTitle,
     DeltaCalculList,
@@ -180,7 +181,9 @@ const IterationStepsLayout = () => {
     return (
         <IterationGraph>
             <div className="solution-container">
-                <h3 className="main-title" ref={topRef}>Étapes Stepping Stone</h3>
+                <StepsLayoutTitle>
+                    <h3 className="main-title" ref={topRef}>Étapes Stepping Stone</h3>
+                </StepsLayoutTitle>
 
                 {/* Navigation Principale (Haut) */}
                 {totalSteps > 1 && (
@@ -259,65 +262,65 @@ const IterationStepsLayout = () => {
                                 </SubCarouselNav>
                             )}
 
-{/* Section 3 : Calculs de Delta */}
-{etape.deltas && etape.deltas.length > 0 && (
-    <>
-        <hr className="section-divider" />
-        <SubSectionTitle>Calcul des Évaluations (Deltas)</SubSectionTitle>
-        <DeltaCalculList>
-            {etape.deltas.map((etapeDelta, idxDelta) => {
-                let isNegatif = false;
+                            {/* Section 3 : Calculs de Delta */}
+                            {etape.deltas && etape.deltas.length > 0 && (
+                                <>
+                                    <hr className="section-divider" />
+                                    <SubSectionTitle>Calcul des Évaluations (Deltas)</SubSectionTitle>
+                                    <DeltaCalculList>
+                                        {etape.deltas.map((etapeDelta, idxDelta) => {
+                                            let isNegatif = false;
 
-                if (etapeDelta.calcul && etapeDelta.calcul.includes('=')) {
-                    // On découpe par tous les "=" présents
-                    const parts = etapeDelta.calcul.split('=');
-                    // On récupère le tout dernier morceau (le résultat final)
-                    const dernierResultat = parts[parts.length - 1]; 
-                    
-                    // On vérifie si ce dernier résultat contient le signe moins
-                    if (dernierResultat && dernierResultat.includes('-')) {
-                        isNegatif = true;
-                    }
-                }
+                                            if (etapeDelta.calcul && etapeDelta.calcul.includes('=')) {
+                                                // On découpe par tous les "=" présents
+                                                const parts = etapeDelta.calcul.split('=');
+                                                // On récupère le tout dernier morceau (le résultat final)
+                                                const dernierResultat = parts[parts.length - 1]; 
+                                                
+                                                // On vérifie si ce dernier résultat contient le signe moins
+                                                if (dernierResultat && dernierResultat.includes('-')) {
+                                                    isNegatif = true;
+                                                }
+                                            }
 
-                return (
-                    <li 
-                        key={idxDelta} 
-                        className="delta-item"
-                        style={isNegatif ? {
-                            backgroundColor: '#fef2f2', // Fond rouge très doux
-                            border: '1px solid #fca5a5',  // Bordure rouge pastel
-                            borderRadius: '6px',
-                            padding: '8px 12px',
-                            margin: '6px 0',
-                            listStyleType: 'none',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        } : {}}
-                    >
-                        <code>
-                            {etapeDelta.calcul}
-                        </code>
-                        {isNegatif && (
-                            <span style={{ 
-                                marginLeft: '10px', 
-                                fontSize: '0.8rem', 
-                                color: '#dc2626', 
-                                fontWeight: 'bold',
-                                backgroundColor: '#fee2e2',
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                whiteSpace: 'nowrap'
-                            }}>
-                            </span>
-                        )}
-                    </li>
-                );
-            })}
-        </DeltaCalculList>
-    </>
-)}
+                                            return (
+                                                <li 
+                                                    key={idxDelta} 
+                                                    className="delta-item"
+                                                    style={isNegatif ? {
+                                                        backgroundColor: '#fef2f2', // Fond rouge très doux
+                                                        border: '1px solid #fca5a5',  // Bordure rouge pastel
+                                                        borderRadius: '6px',
+                                                        padding: '8px 12px',
+                                                        margin: '6px 0',
+                                                        listStyleType: 'none',
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center'
+                                                    } : {}}
+                                                >
+                                                    <code>
+                                                        {etapeDelta.calcul}
+                                                    </code>
+                                                    {isNegatif && (
+                                                        <span style={{ 
+                                                            marginLeft: '10px', 
+                                                            fontSize: '0.8rem', 
+                                                            color: '#dc2626', 
+                                                            fontWeight: 'bold',
+                                                            backgroundColor: '#fee2e2',
+                                                            padding: '2px 6px',
+                                                            borderRadius: '4px',
+                                                            whiteSpace: 'nowrap'
+                                                        }}>
+                                                        </span>
+                                                    )}
+                                                </li>
+                                            );
+                                        })}
+                                    </DeltaCalculList>
+                                </>
+                            )}
 
                             {/* Section 4 : Évaluation des Chemins & Matrice Opti */}
                             {etape.optimisation?.cheminsEvalues && etape.optimisation.cheminsEvalues.length > 0 && (

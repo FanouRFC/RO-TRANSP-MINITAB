@@ -265,6 +265,7 @@ const App = () => {
           {/* Contenu dynamique défilant à droite */}
           <MainContentArea>
             <SolutionLayout />
+            <BaseSolutionStepsLayout/>
             <IterationStepsLayout />
           </MainContentArea>
         </Container>
