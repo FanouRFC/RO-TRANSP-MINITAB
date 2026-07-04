@@ -54,7 +54,12 @@ const IterationStepsLayout = () => {
                                     </div>
                                 ))
                             }
-                            <h4>Étapes deltas</h4>
+                            {
+                                (()=>
+                                {
+                                    if (etape.deltas)return (<h4>Calcul delta</h4>);
+                                })()
+                            }
                             {
                                 etape.deltas.map((etapeDelta, idxDelta) => (
                                     <div key={idxDelta}>
@@ -62,7 +67,12 @@ const IterationStepsLayout = () => {
                                     </div>
                                 ))
                             }
-                            <h4>Étapes gains</h4>
+                            {
+                                (()=>
+                                {
+                                    if (etape.optimisation?.cheminsEvalues)return (<h4>Étapes gains</h4>);
+                                })()
+                            }
                             {
                                 etape.optimisation?.cheminsEvalues.map((etapeGain, idxGain) => {
                                         const deltaMatch = etape.deltas.find(
@@ -116,7 +126,12 @@ const IterationStepsLayout = () => {
                                         );
                                 })
                             }
-                            <h4>Gain retenu</h4>
+                            {
+                                (()=>
+                                {
+                                    if (etape.optimisation)return (<h4>Gain retenu</h4>);
+                                })()
+                            }
                             {
                                 (() =>
                                 {

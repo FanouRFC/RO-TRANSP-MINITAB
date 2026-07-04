@@ -134,6 +134,14 @@ const Form3 = () => {
                     optimal = true;
                 }
             }else{
+                historiqueComplet.iterationsOptimisation.push({
+                    numeroIteration: iteration++,
+                    potentiels: etapesPotentiels,
+                    deltas: etapesDeltas,
+                    tableauMarginal: tableauMarginal,
+                    optimisation: null,
+                    currentSolution: preOptimalSolution
+                });
                     optimal=true;
             }
         }
