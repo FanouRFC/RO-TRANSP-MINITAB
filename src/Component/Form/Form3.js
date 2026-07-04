@@ -43,9 +43,10 @@ const Form3 = () => {
         e.preventDefault();
         const data = new FormData(e.target);
         const cout = Object.fromEntries(data.entries());
-        if (cout == null) return;
+        // if (cout == null) return;
         // const data = new FormData(e.target);
         // const cout = Object.fromEntries(data.entries());
+        // const cout = minitabData.cout;
         try{
             const { baseSolution, casD, etapes: etapesBase } = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);
             // const { baseSolution, casD, etapes: etapesBase } = generateSolution(Object.values(cout), minitabData.a, minitabData.b, minitabData.nbLigne, minitabData.nbColonne);

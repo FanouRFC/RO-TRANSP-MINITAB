@@ -26,6 +26,7 @@ const initialState = {
     zBase: 0,
     finalSolution: null,
     zOptimal: 0,
+    etapesData: null
 };
 
 
@@ -227,13 +228,13 @@ const reducer = (state, action) => {
       case 'start':
         return {...state, isGettingStarted: true};
       case 'addMagasins':
-        return {...state, nbLigne: action.nbA, nbColonne: action.nbB, a: null, b: null, cout: null, baseSolution: null, finalSolution: null};
+        return {...state, nbLigne: action.nbA, nbColonne: action.nbB, a: null, b: null, cout: null, baseSolution: null, finalSolution: null, etapesData: null};
       case 'addQte':
         return {...state, a: action.a, b: action.b, isQteValid: true, errorQte: action.errorQte};
       case 'addCout':
         return {...state, cout: action.cout, isCoutValid: true, baseSolution: action.bs, zBase: action.z, casD: action.casD, finalSolution: action.os, zOptimal: action.zOptimal, etapesData: action.etapesData, isGifDisplayed: false, isLoading: false};
       case 'editLigneColonne':
-        return {...state, nbLigne: 0, nbColonne: 0, a: null, b: null, isQteValid: false, isCoutValid: false, cout: null, baseSolution: null, finalSolution: null, zBase: 0, zOptimal: 0, casD: false}
+        return {...state, nbLigne: 0, nbColonne: 0, a: null, b: null, isQteValid: false, isCoutValid: false, cout: null, baseSolution: null, finalSolution: null, zBase: 0, zOptimal: 0, casD: false, etapesData: null}
       case 'editQte':
         return {...state, isQteValid: false};
       case 'editCout':

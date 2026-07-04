@@ -18,7 +18,7 @@ const InputNumber = (props) => {
             event.preventDefault();
           }
         }} 
-        required
+        // required
       />
   )
 }
