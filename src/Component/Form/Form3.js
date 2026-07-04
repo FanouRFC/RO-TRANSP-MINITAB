@@ -41,7 +41,9 @@ const Form3 = () => {
     
     const onSubmitForm3 = (e) => {
         e.preventDefault();
-        let cout = minitabData.cout;
+        const data = new FormData(e.target);
+        const cout = Object.fromEntries(data.entries());
+        if (cout == null) return;
         // const data = new FormData(e.target);
         // const cout = Object.fromEntries(data.entries());
         try{
