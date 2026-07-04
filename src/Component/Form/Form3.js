@@ -94,11 +94,13 @@ const Form3 = () => {
             // Tant qu'il existe Delta(x,y) < 0 => substitution de vecteur et refaire les étapes
             // console.log("LES DELATAS : ",deltas )
             let isNegativeExit = false;
+            console.log(allDeltas)
             allDeltas.forEach(delta=>{
                 if(Object.values(delta)[0]<0){
                     isNegativeExit = true;
                 }
             })
+            console.log("Neg : ", isNegativeExit)
             if(isNegativeExit){
                 const { optimalSolution, etapesOptimisation } = generateOptimalSolution(preOptimalSolution, allDeltas, original, minitabData.nbLigne, minitabData.nbColonne);
                 // Enregistrement des données de cette itération spécifique
@@ -121,6 +123,7 @@ const Form3 = () => {
                     // console.log("hehe")
                     continue
                 }else{
+                    console.log("Niditraaaa")
                     // Pas de négatif -> La solution actuelle est optimale !
                     // On enregistre quand même la dernière itération (sans étape d'optimisation car aucun transfert n'a lieu)
                     historiqueComplet.iterationsOptimisation.push({

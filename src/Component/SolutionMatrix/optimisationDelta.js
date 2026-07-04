@@ -23,7 +23,6 @@ const OptimisedDelta = ({
         const v = solution?.[key];
         return v;
     };
-    console.log(solution)
 
     return (
         <StepsLayoutContainer>
