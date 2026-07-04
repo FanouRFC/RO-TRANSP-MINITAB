@@ -26,8 +26,19 @@ export const SolutionLayoutContainer = styled.div`
   /* Conservé au cas où il est utilisé ailleurs */
 `;
 
-export const StepsLayoutTitle = styled.h2`
+export const StepsLayoutTitle = styled.div`
   /* Conservé au cas où il est utilisé ailleurs */
+  background: red;
+    width: 100%;
+    z-index: 3;
+    // height: ${({theme})=>theme.size(8)}px;
+    padding: ${({theme}) => theme.size(2)+4}px ${({theme})=>theme.size(3)}px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: ${({theme})=>theme.colors.white};
+    color: ${({theme})=>theme.colors.brandPrimary900};
+    box-shadow: ${({theme})=>theme.shadows.shadow1};
 `;
 
 
