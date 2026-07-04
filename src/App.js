@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './Core/Theme/Global';
 import Theme from './Core/Theme/index.ts';
-import { Container } from './Styles/styles';
+import { Container, MainContentArea } from './Styles/styles';
 import FormLayout from './Layouts/FormLayout';
 import SolutionLayout from './Layouts/SolutionLayout';
 import BaseSolutionStepsLayout from './Layouts/BaseSolutionStepsLayout';
@@ -254,26 +254,23 @@ const reducer = (state, action) => {
 
 const App = () => {
   const [minitabData, dispatch] = useReducer(reducer, debugState);
-  
-  useEffect( () =>{
-      // console.log('Minitab Data:', minitabData);
-  },[minitabData]);
 
   return (
-    <ThemeProvider theme={ Theme } >
-      <MinitabContext.Provider value={{minitabData, dispatch}}>
-        <GlobalStyles/>
-        <>
-          <Container>
-            <FormLayout/>
-            {/* <BaseSolutionStepsLayout/> */}
-            <IterationStepsLayout/>
-            <SolutionLayout/>
-          </Container>
-        </>
+    <ThemeProvider theme={Theme}>
+      <MinitabContext.Provider value={{ minitabData, dispatch }}>
+        <GlobalStyles />
+        <Container>
+          {/* Formulaire fixé à gauche */}
+          <FormLayout />
+          {/* Contenu dynamique défilant à droite */}
+          <MainContentArea>
+            <SolutionLayout />
+            <IterationStepsLayout />
+          </MainContentArea>
+        </Container>
       </MinitabContext.Provider>
     </ThemeProvider>
-  )
-}
+  );
+};
 
 export default App; 
