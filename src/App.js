@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './Core/Theme/Global';
 import Theme from './Core/Theme/index.ts';
