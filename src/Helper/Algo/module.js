@@ -378,7 +378,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
     // --- AJOUT : Structure pour l'historique de la recherche de chemins ---
     let etapesOptimisation = {
         cheminsEvalues: [], // Tous les cycles fermés trouvés avec leurs détails
-        cheminChoisi: null   // Le cycle gagnant appliqué
+        cheminChoisi: null,   // Le cycle gagnant appliqué
     };
 
     Object.keys(matriceOriginal).forEach(index=> {
@@ -505,19 +505,20 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
     {
         gainEstime = loopMin * headValue;
     }
-    chemins.push({substitue: headIndex, gain: gainEstime, substitueValue: loopMin, chemin: loopPath});
+    chemins.push({substitue: headIndex, gain: gainEstime, substitueValue: loopMin, chemin: loopPath, coutMarginal: headValue});
 
     // --- AJOUT : Sauvegarde des détails du chemin évalué ---
     let descriptionChemin = loopPath.map((caseId, idx) => {
             return `${caseId}(${idx % 2 === 0 ? '+' : '-'})`;
         }).join(' -> ') + ` -> ${headIndex}`;
-
         etapesOptimisation.cheminsEvalues.push({
             caseEntrante: headIndex,
             coutMarginal: headValue,
             cheminForme: descriptionChemin,
+            signe: [...loopPath],
             quantiteMax: loopMin,
-            gainTotal: gainEstime
+            gainTotal: gainEstime,
+            preOptimalSolution: baseSolution
         });
 
     }
@@ -526,6 +527,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
     let cheminPrise = [];
     let substitueValue;
     let caseGagnante = "";
+    let coutMarginal = 0
 
     chemins.map(chemin => {
         if(chemin.gain < gain){
@@ -533,6 +535,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
             cheminPrise = chemin.chemin;
             substitueValue = chemin.substitueValue;
             caseGagnante = chemin.substitue;
+            coutMarginal = chemin.coutMarginal;
         }
     })
 
@@ -541,6 +544,7 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
         etapesOptimisation.cheminChoisi = {
             caseEntrante: caseGagnante,
             quantiteDeplacee: substitueValue,
+            coutMarginal: coutMarginal,
             gainAmelioration: gain,
             cheminDetaille: cheminPrise.map((caseId, idx) => {
                 const estPositif = idx % 2 === 0;

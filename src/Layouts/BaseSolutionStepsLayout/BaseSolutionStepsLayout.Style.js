@@ -122,6 +122,34 @@ export const StepsLayoutContainer = styled.div`
         border: none !important;
         background: transparent !important;
     }
+    .sign {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+
+        width: 22px;
+        height: 22px;
+
+        border-radius: 50%;
+        background: #ffb300;
+        border: 2px dashed #000;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+
+        font-weight: bold;
+        z-index: 1000;
+    }
+
+    .sign.plus {
+        /* optionnel */
+    }
+
+    .sign.minus {
+        /* optionnel */
+    }
 `;
 
 export const Remaining = styled.td`
