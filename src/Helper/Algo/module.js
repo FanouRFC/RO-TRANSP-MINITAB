@@ -330,16 +330,17 @@ export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
     let etapesDeltas = [];
     let tableauMarginal = {}; // Contiendra la valeur brute ou "-" si c'est une case de base
     let numEtape = 1;
+    let lettre = 'A';
 
     Object.keys(matriceOriginal).forEach(index => {
         if(!Object.keys(edgePotentiel).includes(index)){
-            const sourceNode = index.slice(0,2);
-            const targetNode = index.slice(2,4);
-            // let delta = nodePotentiel[sourceNode] + matriceOriginal[index] - nodePotentiel[targetNode];
-            // allDeltas.push({[`${index}`] : delta});
+            const [, a, b] = index.match(/^a(\d+)b(\d+)$/);
 
-            const i = sourceNode.slice(1);
-            const j = targetNode.slice(1);
+            const i = parseInt(a, 10);
+            const j = parseInt(b, 10);
+
+            const sourceNode = `a${i}`;
+            const targetNode = `b${j}`;
 
             // Si la case n'est pas une case de base (c'est une case vide)
             if (!Object.keys(edgePotentiel).includes(index)) {
@@ -357,7 +358,7 @@ export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
                 etapesDeltas.push({
                     etape: numEtape++,
                     case: index,
-                    calcul: `δ(${i}, ${j}) = ${u_i} + ${c_ij} - ${v_j} = ${delta}`
+                    calcul: `δ(${String.fromCharCode('A'.charCodeAt(0) + i - 1)}, ${j}) = ${u_i} + ${c_ij} - ${v_j} = ${delta}`
                 });
             } else {
                 // Case de base occupée
@@ -365,10 +366,6 @@ export const deltaXY = (baseSolution, potentiels, matriceOriginal) => {
             }
         }
     })
-
-    // for (let i = 0; i < etapesDeltas.length; ++i)
-    //     console.log(etapesDeltas[i])
-    // console.log("Tableau marginal : ", tableauMarginal)
 
     return {allDeltas, tableauMarginal, etapesDeltas};
 }

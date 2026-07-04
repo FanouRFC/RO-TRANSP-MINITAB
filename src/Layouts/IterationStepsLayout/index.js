@@ -28,6 +28,7 @@ const IterationStepsLayout = () => {
                                 Étape {index + 1}
                             </p>
                                 {/* Extra steps */}
+                            <h4>Étapes potentiels</h4>
                             <div>
                                 <GraphPotentiel
                                     currentSolution={etape.currentSolution}
@@ -49,6 +50,14 @@ const IterationStepsLayout = () => {
                                             currentSolution={etape.currentSolution}
                                             etatPotentiel={etapePotentiel.etatPotentiels}
                                         />
+                                    </div>
+                                ))
+                            }
+                            <h4>Étapes deltas</h4>
+                            {
+                                etape.deltas.map((etapeDelta, idxDelta) => (
+                                    <div key={idxDelta}>
+                                        <p>{etapeDelta.calcul}</p>
                                     </div>
                                 ))
                             }
