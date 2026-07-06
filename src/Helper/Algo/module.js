@@ -567,20 +567,42 @@ export const generateOptimalSolution = (baseSolution, deltas, matriceOriginal, n
         };
     }
 
-    for(let i = 0; i < cheminPrise.length; i++){
-        const estPositif = i%2==0;
-        let valeurDeBase = fullMatriceBase[cheminPrise[i]];
-        let nouvelleValeur = 0;
-        if (valeurDeBase === epsilon || Math.abs(substitueValue) == epsilon) {
-            nouvelleValeur = estPositif ? Math.abs(substitueValue) : -Math.abs(substitueValue);
-        } else {
-            nouvelleValeur = estPositif ? valeurDeBase + substitueValue : valeurDeBase - substitueValue;
+    for (let i = 0; i < cheminPrise.length; i++) 
+    {
+        const estPositif = i % 2 === 0;
+        const valeurDeBase = fullMatriceBase[cheminPrise[i]];
+        let nouvelleValeur;
+
+        if (Math.abs(valeurDeBase) === epsilon) 
+        {
+            if (Math.abs(substitueValue) === epsilon) 
+            {
+                if (valeurDeBase === substitueValue) 
+                {
+                    // ε + ε ou -ε - (-ε)
+                    nouvelleValeur = estPositif ? epsilon : 0;
+                } 
+                else 
+                {
+                    // ε avec -ε
+                    nouvelleValeur = estPositif? Math.abs(substitueValue) : -Math.abs(substitueValue);
+                }
+            } 
+            else 
+            {
+                nouvelleValeur = estPositif? Math.abs(substitueValue) : -Math.abs(substitueValue);
+            }
+        } 
+        else if (Math.abs(substitueValue) === epsilon) 
+        {
+
+            nouvelleValeur = valeurDeBase;
+        } 
+        else 
+        {
+            nouvelleValeur = estPositif? valeurDeBase + substitueValue : valeurDeBase - substitueValue;
         }
-        // if(i%2!=0){
-        //     fullMatriceBase[cheminPrise[i]] -= substitueValue;
-        // }else {
-        //     fullMatriceBase[cheminPrise[i]] += substitueValue;
-        // }
+
         fullMatriceBase[cheminPrise[i]] = nouvelleValeur;
     }
     

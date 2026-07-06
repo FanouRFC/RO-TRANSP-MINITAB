@@ -86,7 +86,9 @@ const Form3 = () => {
                 iterationsOptimisation: []  
             };
             
-        while(!optimal){
+        let iterr = 0;
+        while(!optimal && iterr < 20){
+            iterr++;
            const { nodePotentiel, potentielsXY, etapesPotentiels } = generatePotentiels(preOptimalSolution, original, minitabData.nbLigne, minitabData.nbColonne);
             // console.log("LES Potentiels : ",potentiels )
         
@@ -115,6 +117,8 @@ const Form3 = () => {
                     optimisation: etapesOptimisation,
                     currentSolution: preOptimalSolution
                 });
+
+                // if (preOptimalSolution == optimalSolution) break;
 
                 preOptimalSolution = optimalSolution;
                 const graph = new Graph();

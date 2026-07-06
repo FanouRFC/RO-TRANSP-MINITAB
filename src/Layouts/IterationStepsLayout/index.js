@@ -160,7 +160,7 @@ const IterationStepsLayout = () => {
     const allGraphs = [
         { type: 'intro-false', data: null },
         { type: 'intro-true', data: null },
-        ...(etape.potentiels || []).map(p => ({ type: 'dynamique', data: p }))
+        ...(etape.potentiels? etape.potentiels : []).map(p => ({ type: 'dynamique', data: p }))
     ];
     
     const totalGraphsCount = allGraphs.length;
